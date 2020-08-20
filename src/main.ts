@@ -1,6 +1,6 @@
 const cellSize = 10
 const fieldSide = 64
-const seed = 0.45
+const seed = 0.4
 
 const canvas = document.getElementById("life") as HTMLCanvasElement
 canvas.width = fieldSide * cellSize
@@ -50,6 +50,7 @@ function evolve(field: number[]): void {
 //   [i - 1]       [i]       [i + 1]
 //   [i + row - 1] [i + row] [i + row + 1]
 function countLivingNeighbors(field: number[], cellIndex: number): number {
+    // TODO: prevent horizontal overflow
     const indices = [
         cellIndex - fieldSide - 1,
         cellIndex - fieldSide,
@@ -59,7 +60,7 @@ function countLivingNeighbors(field: number[], cellIndex: number): number {
         cellIndex + fieldSide - 1,
         cellIndex + fieldSide,
         cellIndex + fieldSide + 1,
-    ]
+    ].filter((index) => index > 0 && index < field.length)
 
     return indices.reduce((acc, index) => acc + field[index], 0)
 }
