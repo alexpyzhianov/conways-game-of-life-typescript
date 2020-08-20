@@ -1,0 +1,17 @@
+{
+  "name": "conways",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Alexey Pyzhianov <alex.pyzhianov@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "http-server public",
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.3",
+    "rollup": "^2.26.4",
+    "typescript": "^3.9.7"
+  }
+}
