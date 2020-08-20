@@ -28,12 +28,6 @@ function mainLoop(): void {
     evolve(field)
 }
 
-setInterval(mainLoop, 500)
-
-// Rules:
-// Any live cell with two or three live neighbours survives.
-// Any dead cell with three live neighbours becomes a live cell.
-// All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 function evolve(field: number[]): void {
     field.forEach((cell, index) => {
         const dead = cell === 0
@@ -69,3 +63,5 @@ function countLivingNeighbors(field: number[], cellIndex: number): number {
 
     return indices.reduce((acc, index) => acc + field[index], 0)
 }
+
+setInterval(mainLoop, 500)
