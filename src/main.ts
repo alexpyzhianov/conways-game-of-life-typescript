@@ -25,13 +25,13 @@ function mainLoop(): void {
         }
     })
 
-    evolve(field)
+    evolve()
 }
 
-function evolve(field: number[]): void {
+function evolve(): void {
     field.forEach((cell, index) => {
         const dead = cell === 0
-        const neighbors = countLivingNeighbors(field, index)
+        const neighbors = countLivingNeighbors(index)
 
         if (dead && neighbors === 3) {
             // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
@@ -49,20 +49,31 @@ function evolve(field: number[]): void {
 //   [i - row - 1] [i - row] [i - row + 1]
 //   [i - 1]       [i]       [i + 1]
 //   [i + row - 1] [i + row] [i + row + 1]
-function countLivingNeighbors(field: number[], cellIndex: number): number {
-    // TODO: prevent horizontal overflow
-    const indices = [
-        cellIndex - fieldSide - 1,
-        cellIndex - fieldSide,
-        cellIndex - fieldSide + 1,
-        cellIndex - 1,
-        cellIndex + 1,
-        cellIndex + fieldSide - 1,
-        cellIndex + fieldSide,
-        cellIndex + fieldSide + 1,
-    ].filter((index) => index > 0 && index < field.length)
+function countLivingNeighbors(cellIndex: number): number {
+    const isLeftBorder = cellIndex === 0 || (cellIndex - 1) % fieldSide === 0
+    const isRightBorder = cellIndex % fieldSide === 0
 
-    return indices.reduce((acc, index) => acc + field[index], 0)
+    const indices = [cellIndex - fieldSide, cellIndex + fieldSide]
+
+    if (!isLeftBorder) {
+        indices.push(
+            cellIndex - fieldSide - 1,
+            cellIndex - 1,
+            cellIndex + fieldSide - 1,
+        )
+    }
+
+    if (!isRightBorder) {
+        indices.push(
+            cellIndex - fieldSide + 1,
+            cellIndex + 1,
+            cellIndex + fieldSide + 1,
+        )
+    }
+
+    return indices
+        .filter((index) => index >= 0 && index < field.length)
+        .reduce((acc, index) => acc + field[index], 0)
 }
 
 setInterval(mainLoop, 500)
